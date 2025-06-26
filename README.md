@@ -1,44 +1,37 @@
 # ⚡ Generador de Declaraciones RETIE
 
-Aplicación web gratuita que genera automáticamente declaraciones de **cumplimiento RETIE** por apartamento, basada en una plantilla `.docx`.
+Aplicación web para generar automáticamente declaraciones de **cumplimiento RETIE** por apartamento, basada en una plantilla Word personalizada (`.docx`).
 
 🔧 Ideal para:
 - Ingenieros eléctricos
 - Revisores de cumplimiento RETIE
-- Proyectos de vivienda, torres, edificios
-- Constructores o diseñadores eléctricos
+- Constructores de proyectos de vivienda (torres, edificios, conjuntos)
+- Cualquier profesional que deba emitir autodeclaraciones RETIE rápidamente
 
 ---
 
 ## 🚀 ¿Qué hace esta app?
 
-Te permite subir una plantilla Word con los campos `{{consecutivo}}` y `{{apto}}`, para que el sistema genere copias personalizadas automáticamente para todos los apartamentos de una torre, siguiendo una numeración secuencial.
+Sube una plantilla `.docx` con los campos `{{consecutivo}}` y `{{apto}}`, y el sistema genera múltiples documentos listos para imprimir o firmar.
 
-✅ Conserva el diseño original de la plantilla  
-✅ No pierde formato, ni imágenes  
-✅ Exporta todo en un solo documento Word listo para imprimir o firmar
+✅ Mantiene el diseño, formato e imágenes originales  
+✅ Genera múltiples declaraciones en un solo archivo  
+✅ Configura fácilmente apartamentos por piso o piso a piso
 
 ---
 
 ## 🌐 Accede aquí
 
-👉 [Haz clic para abrir la app](https://TU-USUARIO.streamlit.app)  
-*Reemplaza por el enlace de Streamlit Cloud real*
+👉 [https://dan20012025-declaraci-n-de-cumplimiento.streamlit.app](https://dan20012025-declaraci-n-de-cumplimiento.streamlit.app)
 
 ---
 
 ## 🛠️ Cómo usar
 
-1. Sube tu plantilla `.docx` que tenga los campos:  
-   - `{{consecutivo}}` → para el número que irá aumentando
-   - `{{apto}}` → para el número del apartamento
-
-2. Ingresa el consecutivo inicial (ej. 1300)
-
-3. Elige si todos los pisos tienen igual cantidad de apartamentos  
-   o configura manualmente por piso
-
-4. Descarga el documento final con todas las autodeclaraciones generadas
+1. Sube tu plantilla Word con `{{consecutivo}}` y `{{apto}}`.
+2. Elige el número inicial del consecutivo.
+3. Define cuántos pisos y apartamentos tiene la torre.
+4. Descarga el documento final en un solo archivo Word.
 
 ---
 
