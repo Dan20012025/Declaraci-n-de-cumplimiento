@@ -22,7 +22,7 @@ Sube una plantilla `.docx` con los campos `{{consecutivo}}` y `{{apto}}`, y el s
 
 ## 🌐 Accede aquí
 
-👉 [https://dan20012025-declaraci-n-de-cumplimiento.streamlit.app](https://dan20012025-declaraci-n-de-cumplimiento.streamlit.app)
+👉 [https://dan20012025-declaraci-n-de-cumplimiento.streamlit.app]https://daniusgenerardeclaracionesretie.streamlit.app/
 
 ---
 
