@@ -186,6 +186,7 @@ else:
 # GENERAR DOCUMENTO
 # --------------------------------------------------
 
+apartamentos = sorted(set(apartamentos))
 if plantilla and apartamentos:
 
     if st.button("Generar documento"):
@@ -202,3 +203,4 @@ if plantilla and apartamentos:
                 file_name="Declaraciones_Final.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
+
