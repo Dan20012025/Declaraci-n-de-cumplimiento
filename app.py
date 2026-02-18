@@ -58,53 +58,113 @@ misma_cantidad = st.radio("¿Todos los pisos tienen la misma cantidad de apartam
 
 apartamentos = []
 
-if misma_cantidad == "Sí":
-    aptos_por_piso = st.number_input("¿Cuántos apartamentos por piso?", min_value=1, value=4)
-    for piso in range(1, pisos+1):
-        for num in range(1, aptos_por_piso+1):
-            apto = int(f"{piso}{str(num).zfill(2)}")
-            apartamentos.append(apto)
+# --------------------------------------------------
+# ¿Todos los pisos tienen misma cantidad?
+# --------------------------------------------------
 
-elif misma_cantidad == "No":
-    primer_diferente = st.radio("¿Solo el primer piso es diferente?", ["Sí", "No"])
+misma_cantidad_pisos = st.radio(
+    "¿Todos los pisos tienen la misma cantidad de apartamentos?",
+    ["Sí", "No"]
+)
 
-    if primer_diferente == "Sí":
-        primer_piso = st.text_input("Apartamentos del primer piso (ej: 101, 102, 103)")
-        resto = st.number_input("¿Cuántos apartamentos por piso (excepto el primero)?", min_value=1, value=4)
-        if primer_piso:
-            aptos_p1 = [int(x.strip()) for x in primer_piso.split(',') if x.strip().isdigit()]
-            apartamentos.extend(aptos_p1)
-            for piso in range(2, pisos+1):
-                for num in range(1, resto+1):
+if misma_cantidad_pisos == "Sí":
+
+    # --------------------------------------------------
+    # ¿Secuencia normal o tipología especial?
+    # --------------------------------------------------
+
+    misma_secuencia = st.radio(
+        "¿Todos los apartamentos del piso tienen secuencia consecutiva normal? (ej: 201,202,203...)",
+        ["Sí", "No"]
+    )
+
+    if misma_secuencia == "Sí":
+        aptos_por_piso = st.number_input("¿Cuántos apartamentos por piso?", min_value=1, value=4)
+
+        for piso in range(1, pisos+1):
+            for num in range(1, aptos_por_piso+1):
+                apto = int(f"{piso}{str(num).zfill(2)}")
+                apartamentos.append(apto)
+
+    else:
+        secuencia = st.text_input(
+            "Escribe la secuencia usando 'x' como número de piso (ej: x01,x02,x03,x15,x16)"
+        )
+
+        if secuencia:
+            patrones = [s.strip() for s in secuencia.split(',')]
+
+            for piso in range(1, pisos+1):
+                for patron in patrones:
+                    if 'x' in patron:
+                        apto = patron.replace('x', str(piso))
+                        apartamentos.append(int(apto))
+
+# --------------------------------------------------
+# Si NO todos los pisos tienen misma cantidad
+# --------------------------------------------------
+
+else:
+
+    diferentes = st.text_input(
+        "¿Qué pisos son diferentes? (ej: 3,5,6)"
+    )
+
+    pisos_diferentes = []
+
+    if diferentes:
+        pisos_diferentes = [
+            int(x.strip()) for x in diferentes.split(',')
+            if x.strip().isdigit()
+        ]
+
+    # Primero definimos modelo base
+    misma_secuencia = st.radio(
+        "Para los pisos normales, ¿usan secuencia consecutiva normal?",
+        ["Sí", "No"]
+    )
+
+    aptos_base = []
+
+    if misma_secuencia == "Sí":
+        aptos_por_piso = st.number_input(
+            "¿Cuántos apartamentos tienen los pisos normales?",
+            min_value=1,
+            value=4
+        )
+
+        for piso in range(1, pisos+1):
+            if piso not in pisos_diferentes:
+                for num in range(1, aptos_por_piso+1):
                     apto = int(f"{piso}{str(num).zfill(2)}")
                     apartamentos.append(apto)
 
     else:
-        st.markdown("**Define los apartamentos por piso:**")
-        for piso in range(1, pisos+1):
-            entrada = st.text_input(f"Piso {piso}", key=f"piso_{piso}")
-            if entrada:
-                partes = []
-                for val in entrada.split(','):
-                    val = val.strip()
-                    if '-' in val:
-                        ini, fin = val.split('-')
-                        partes.extend(range(int(ini), int(fin)+1))
-                    elif val.isdigit():
-                        partes.append(int(val))
-                apartamentos.extend(partes)
+        secuencia = st.text_input(
+            "Secuencia base usando x (ej: x01,x02,x15,x16)"
+        )
 
-if plantilla and apartamentos:
-    if st.button("Generar documento"):
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".docx") as tmp:
-            tmp.write(plantilla.read())
-            tmp.flush()
-            doc_path = generar_documento(tmp.name, consecutivo_inicial, apartamentos)
+        if secuencia:
+            patrones = [s.strip() for s in secuencia.split(',')]
 
-        with open(doc_path, "rb") as f:
-            st.download_button(
-                label="📥 Descargar documento final",
-                data=f,
-                file_name="Declaraciones_Final.docx",
-                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            )
+            for piso in range(1, pisos+1):
+                if piso not in pisos_diferentes:
+                    for patron in patrones:
+                        apto = patron.replace('x', str(piso))
+                        apartamentos.append(int(apto))
+
+    # Ahora pedimos manual los pisos diferentes
+    for piso in pisos_diferentes:
+        entrada = st.text_input(f"Escriba los apartamentos del piso {piso} (ej: 301,305,310)")
+
+        if entrada:
+            partes = []
+            for val in entrada.split(','):
+                val = val.strip()
+                if '-' in val:
+                    ini, fin = val.split('-')
+                    partes.extend(range(int(ini), int(fin)+1))
+                elif val.isdigit():
+                    partes.append(int(val))
+
+            apartamentos.extend(partes)
